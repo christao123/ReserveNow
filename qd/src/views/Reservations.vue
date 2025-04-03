@@ -1,7 +1,7 @@
 <template>
   <AppNavbar />
   <div class="reservations-page">
-    <!-- Page Header -->
+    <!-- 页面头部 -->
     <div class="page-header">
       <div class="header-content">
         <h1 class="page-title">My Reservations</h1>
@@ -9,9 +9,9 @@
       </div>
     </div>
 
-    <!-- Content Area -->
+    <!-- 内容区域 -->
     <div class="page-content">
-      <!-- Status Filter -->
+      <!-- 状态筛选 -->
       <div class="filter-section">
         <div class="filter-tags">
           <el-tag
@@ -28,13 +28,13 @@
         </div>
       </div>
 
-      <!-- Loading State -->
+      <!-- 加载中状态 -->
       <div v-if="loading" class="loading-container">
         <div class="loading-spinner"></div>
         <p>Loading reservation records...</p>
       </div>
 
-      <!-- No Reservation State -->
+      <!-- 无预订状态 -->
       <div v-else-if="reservations.length === 0" class="empty-state">
         <div class="empty-illustration">
           <el-icon><Calendar /></el-icon>
@@ -47,7 +47,7 @@
         </el-button>
       </div>
 
-      <!-- Reservation List -->
+      <!-- 预订列表 -->
       <div v-else class="reservations-list">
         <div 
           v-for="reservation in reservations" 
@@ -111,21 +111,6 @@
               >
                 View QR Code
               </el-button>
-              <el-button 
-                v-if="reservation.status === 3 && !reservation.reviewed"
-                type="success"
-                @click="showReviewDialog(reservation)"
-              >
-                Write Review
-              </el-button>
-              <el-button 
-                v-if="reservation.status === 3 && reservation.reviewed"
-                type="info"
-                plain
-                disabled
-              >
-                Reviewed
-              </el-button>
             </div>
           </div>
         </div>
@@ -144,7 +129,7 @@
     </div>
   </div>
 
-  <!-- Cancel Reservation Dialog -->
+  <!-- 取消预订对话框 -->
   <el-dialog
     v-model="cancelDialogVisible"
     title="Cancel Reservation"
@@ -177,7 +162,7 @@
     </template>
   </el-dialog>
 
-  <!-- Reservation Code Dialog -->
+  <!-- 预订码对话框 -->
   <el-dialog
     v-model="qrCodeDialogVisible"
     title="Reservation QR Code"
@@ -186,133 +171,12 @@
   >
     <div class="qrcode-content">
       <div class="qrcode-container">
+        <!-- 这里可以使用实际的二维码组件 -->
         <div class="qrcode-placeholder">
           Reservation Code: {{ selectedReservation?.reservationCode }}
         </div>
       </div>
       <p class="qrcode-tip">Please show this QR code when you arrive at the restaurant</p>
-    </div>
-  </el-dialog>
-
-  <!-- Review Dialog -->
-  <el-dialog
-    v-model="reviewDialogVisible"
-    title="Write a Review"
-    width="40%"
-    class="review-dialog"
-  >
-    <div class="review-content">
-      <h3 class="review-restaurant-name">{{ selectedReservation?.restaurantName }}</h3>
-      
-      <div class="custom-review-form">
-        <div class="form-section">
-          <label class="form-label">Rating</label>
-          <div class="custom-rating">
-            <div 
-              v-for="star in 5" 
-              :key="star" 
-              class="rating-star" 
-              :class="{ active: star <= reviewForm.rating }"
-              @click="reviewForm.rating = star"
-              @mouseover="hoverRating = star"
-              @mouseleave="hoverRating = 0"
-            >
-              <svg viewBox="0 0 24 24" class="star-icon" :class="{ 'hover': star <= hoverRating && star > reviewForm.rating }">
-                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
-              </svg>
-            </div>
-            <span class="rating-text">{{ getRatingText(hoverRating || reviewForm.rating) }}</span>
-          </div>
-        </div>
-        
-        <div class="form-section">
-          <label class="form-label">Your Review</label>
-          <textarea 
-            v-model="reviewForm.content" 
-            class="custom-textarea" 
-            placeholder="Share your dining experience..."
-            rows="4"
-            :class="{ 'error': contentError }"
-          ></textarea>
-          <span class="error-message" v-if="contentError">{{ contentError }}</span>
-        </div>
-        
-        <div class="form-section">
-          <label class="form-label">Upload Photos (Optional, max 3)</label>
-          <div class="custom-upload-area">
-            <div class="upload-preview">
-              <div 
-                v-for="(photo, index) in reviewPhotoPreviews" 
-                :key="index" 
-                class="preview-item"
-              >
-                <img :src="photo" class="preview-image" />
-                <button type="button" class="remove-btn" @click="removePhoto(index)">
-                  <svg viewBox="0 0 24 24" class="remove-icon">
-                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                  </svg>
-                </button>
-              </div>
-              <div 
-                v-if="reviewPhotoPreviews.length < 3" 
-                class="upload-btn"
-                @click="triggerPhotoUpload"
-              >
-                <svg viewBox="0 0 24 24" class="upload-icon">
-                  <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                </svg>
-                <span>Add Photo</span>
-                <input 
-                  type="file"
-                  ref="photoInput"
-                  accept="image/*"
-                  style="display: none"
-                  @change="uploadPhoto"
-                  multiple
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="form-section">
-          <label class="form-label">Upload Video (Optional, max 1)</label>
-          <div class="custom-video-upload">
-            <div v-if="reviewVideoPreview" class="video-preview">
-              <video :src="reviewVideoPreview" controls class="preview-video"></video>
-              <button type="button" class="remove-btn" @click="removeVideo">
-                <svg viewBox="0 0 24 24" class="remove-icon">
-                  <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                </svg>
-              </button>
-            </div>
-            <div v-else class="video-upload-btn" @click="triggerVideoUpload">
-              <svg viewBox="0 0 24 24" class="upload-icon">
-                <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
-              </svg>
-              <span>Add Video</span>
-              <input 
-                type="file"
-                ref="videoInput"
-                accept="video/*"
-                style="display: none"
-                @change="uploadVideo"
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="review-actions">
-      <button class="cancel-btn" @click="reviewDialogVisible = false">Cancel</button>
-      <button 
-        class="submit-btn" 
-        @click="submitReview" 
-        :disabled="submittingReview"
-      >
-        <span v-if="submittingReview" class="loading-spinner"></span>
-        <span>{{ submittingReview ? 'Submitting...' : 'Submit Review' }}</span>
-      </button>
     </div>
   </el-dialog>
 
@@ -334,8 +198,7 @@ import {
   Message,
   Warning,
   ArrowRight,
-  Ticket,
-  Plus
+  Ticket
 } from '@element-plus/icons-vue';
 
 const router = useRouter();
@@ -347,29 +210,13 @@ const pageSize = ref(10);
 const selectedStatus = ref(['1', '2']); 
 const cancelDialogVisible = ref(false);
 const qrCodeDialogVisible = ref(false);
-const reviewDialogVisible = ref(false);
 const selectedReservation = ref(null);
 const cancelling = ref(false);
-const submittingReview = ref(false);
 const cancelForm = ref({
   reason: ''
 });
-const reviewForm = ref({
-  id: null,
-  restaurantId: null,
-  rating: 5,
-  content: '',
-  photos: [],
-  videos: []
-});
-const contentError = ref('');
-const hoverRating = ref(0);
-const reviewPhotoPreviews = ref([]);
-const reviewVideoPreview = ref(null);
-const photoInput = ref(null);
-const videoInput = ref(null);
 
-// Status options
+// 状态选项
 const statusOptions = [
   { label: 'Pending', value: '1' },
   { label: 'Confirmed', value: '2' },
@@ -378,7 +225,7 @@ const statusOptions = [
   { label: 'Rejected', value: '4' }
 ];
 
-// Get reservation list
+// 获取预订列表
 const fetchReservations = async () => {
   loading.value = true;
   try {
@@ -391,12 +238,12 @@ const fetchReservations = async () => {
     });
     
     if (response.code === 200) {
-      // Process data format
+      // 处理数据格式
       reservations.value = response.data.list.map(item => ({
         id: item.id,
         restaurantId: item.restaurantId,
         restaurantName: item.restaurantName,
-        restaurantPhoto: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop', // Default image
+        restaurantPhoto: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop', // 默认图片
         address: item.tableType, 
         reservationDate: new Date(item.reservationTime),
         reservationTime: new Date(item.reservationTime).toLocaleTimeString('zh-CN', {
@@ -407,9 +254,8 @@ const fetchReservations = async () => {
         specialRequests: item.remarks,
         status: item.statusValue,
         statusText: item.statusText,
-        reservationCode: `RES${String(item.id).padStart(6, '0')}`, // Generate reservation code
-        cancelReason: item.cancelReason,
-        reviewed: item.reviewed || false
+        reservationCode: `RES${String(item.id).padStart(6, '0')}`, // 生成预订码
+        cancelReason: item.cancelReason
       }));
       total.value = response.data.total;
     }
@@ -420,7 +266,7 @@ const fetchReservations = async () => {
   }
 };
 
-// Toggle status filter
+// 切换状态筛选
 const toggleStatus = (status) => {
   const index = selectedStatus.value.indexOf(status);
   if (index > -1) {
@@ -432,7 +278,7 @@ const toggleStatus = (status) => {
   fetchReservations();
 };
 
-// Get status text
+// 获取状态文本
 const getStatusText = (status) => {
   const statusMap = {
     1: 'Pending',
@@ -444,7 +290,7 @@ const getStatusText = (status) => {
   return statusMap[status] || 'Unknown Status';
 };
 
-// Get status class name
+// 获取状态类名
 const getStatusClass = (status) => {
   const statusMap = {
     0: 'cancelled',
@@ -456,12 +302,12 @@ const getStatusClass = (status) => {
   return statusMap[status] || '';
 };
 
-// Get count for each status
+// 获取各状态数量
 const getStatusCount = (status) => {
   return reservations.value.filter(r => r.status === parseInt(status)).length;
 };
 
-// Format date
+// 格式化日期
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -471,13 +317,13 @@ const formatDate = (date) => {
   });
 };
 
-// Show cancel dialog
+// 显示取消对话框
 const showCancelDialog = (reservation) => {
   selectedReservation.value = reservation;
   cancelDialogVisible.value = true;
 };
 
-// Confirm cancel reservation
+// 确认取消预订
 const confirmCancel = async () => {
   if (!selectedReservation.value) return;
   
@@ -500,233 +346,31 @@ const confirmCancel = async () => {
   }
 };
 
-// View reservation code
+// 查看预订码
 const viewQRCode = (reservation) => {
   selectedReservation.value = reservation;
   qrCodeDialogVisible.value = true;
 };
 
-// Show review dialog
-const showReviewDialog = (reservation) => {
-  selectedReservation.value = reservation;
-  reviewForm.value = {
-    id: reservation.id,
-    restaurantId: reservation.restaurantId,
-    rating: 5,
-    content: '',
-    photos: [],
-    videos: []
-  };
-  reviewPhotoPreviews.value = [];
-  reviewVideoPreview.value = null;
-  contentError.value = '';
-  reviewDialogVisible.value = true;
-};
-
-// Get rating text
-const getRatingText = (rating) => {
-  const texts = ['Very Poor', 'Poor', 'Fair', 'Good', 'Excellent'];
-  return texts[rating - 1] || '';
-};
-
-// Trigger photo upload
-const triggerPhotoUpload = () => {
-  photoInput.value.click();
-};
-
-// Trigger video upload
-const triggerVideoUpload = () => {
-  videoInput.value.click();
-};
-
-// Upload photo
-const uploadPhoto = async (e) => {
-  const files = e.target.files;
-  if (!files || files.length === 0) return;
-  
-  const remainingSlots = 3 - reviewPhotoPreviews.value.length;
-  const filesToUpload = Array.from(files).slice(0, remainingSlots);
-  
-  for (const file of filesToUpload) {
-    if (file.size > 5 * 1024 * 1024) {
-      ElMessage.warning('Image size cannot exceed 5MB');
-      continue;
-    }
-    
-    // Show temporary preview
-    const tempUrl = URL.createObjectURL(file);
-    reviewPhotoPreviews.value.push(tempUrl);
-    
-    // Create FormData object
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    try {
-      submittingReview.value = true;
-      const response = await request.post('/files/images', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      
-      if (response.code === 200) {
-        // Replace temporary preview with actual URL
-        const index = reviewPhotoPreviews.value.indexOf(tempUrl);
-        if (index !== -1) {
-          URL.revokeObjectURL(tempUrl);
-          reviewPhotoPreviews.value[index] = response.data;
-          reviewForm.value.photos.push(response.data);
-        }
-      } else {
-        // Upload failed, remove temporary preview
-        removePhoto(reviewPhotoPreviews.value.indexOf(tempUrl));
-        ElMessage.error('Failed to upload image');
-      }
-    } catch (error) {
-      // Upload failed, remove temporary preview
-      removePhoto(reviewPhotoPreviews.value.indexOf(tempUrl));
-      ElMessage.error('Failed to upload image');
-    } finally {
-      submittingReview.value = false;
-    }
-  }
-  
-  // Clear input to allow uploading the same file again
-  e.target.value = '';
-};
-
-// Remove photo
-const removePhoto = (index) => {
-  if (index < 0 || index >= reviewPhotoPreviews.value.length) return;
-  
-  const previewUrl = reviewPhotoPreviews.value[index];
-  if (previewUrl.startsWith('blob:')) {
-    URL.revokeObjectURL(previewUrl);
-  }
-  
-  reviewPhotoPreviews.value.splice(index, 1);
-  reviewForm.value.photos.splice(index, 1);
-};
-
-// Upload video
-const uploadVideo = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  
-  if (file.size > 50 * 1024 * 1024) {
-    ElMessage.warning('Video size cannot exceed 50MB');
-    return;
-  }
-  
-  // Show temporary preview
-  const tempUrl = URL.createObjectURL(file);
-  reviewVideoPreview.value = tempUrl;
-  
-  // Create FormData object
-  const formData = new FormData();
-  formData.append('file', file);
-  
-  try {
-    submittingReview.value = true;
-    const response = await request.post('/files/videos', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    
-    if (response.code === 200) {
-      // Replace temporary preview with actual URL
-      URL.revokeObjectURL(tempUrl);
-      reviewVideoPreview.value = response.data;
-      reviewForm.value.videos = [response.data];
-    } else {
-      // Upload failed, remove temporary preview
-      removeVideo();
-      ElMessage.error('Failed to upload video');
-    }
-  } catch (error) {
-    // Upload failed, remove temporary preview
-    removeVideo();
-    ElMessage.error('Failed to upload video');
-  } finally {
-    submittingReview.value = false;
-  }
-  
-  // Clear input to allow uploading the same file again
-  e.target.value = '';
-};
-
-// Remove video
-const removeVideo = () => {
-  if (reviewVideoPreview.value && reviewVideoPreview.value.startsWith('blob:')) {
-    URL.revokeObjectURL(reviewVideoPreview.value);
-  }
-  
-  reviewVideoPreview.value = null;
-  reviewForm.value.videos = [];
-};
-
-// Submit review
-const submitReview = async () => {
-  // Validate content
-  contentError.value = '';
-  if (!reviewForm.value.content.trim()) {
-    contentError.value = 'Please enter your review content';
-    return;
-  }
-  
-  submittingReview.value = true;
-  try {
-    // Convert photo array to string format: url|url|url
-    const photosString = reviewForm.value.photos.join('|');
-    // Convert video array to string format
-    const videosString = reviewForm.value.videos.join('|');
-    
-    const response = await request.post('/reviews', {
-      id: reviewForm.value.id,
-      restaurantId: reviewForm.value.restaurantId,
-      content: reviewForm.value.content,
-      photos: photosString,  // Send as string format
-      videos: videosString,  // Send as string format
-      rating: reviewForm.value.rating
-    });
-    
-    if (response.code === 200) {
-      ElMessage.success('Review submitted successfully');
-      reviewDialogVisible.value = false;
-      
-      // Update current reservation's reviewed status
-      const index = reservations.value.findIndex(r => r.id === selectedReservation.value.id);
-      if (index !== -1) {
-        reservations.value[index].reviewed = true;
-      }
-    }
-  } catch (error) {
-    ElMessage.error('Failed to submit review');
-  } finally {
-    submittingReview.value = false;
-  }
-};
-
-// Go to explore page
+// 前往探索页面
 const goToExplore = () => {
   router.push('/explore');
 };
 
-// Handle page change
+// 处理分页变化
 const handlePageChange = (page) => {
   currentPage.value = page;
   fetchReservations();
 };
 
-// Get reservation list when component is mounted
+// 组件挂载时获取预订列表
 onMounted(() => {
   fetchReservations();
 });
 </script>
 
 <style lang="scss" scoped>
-// Variables
+// 变量
 $primary-color: #ff4757;
 $secondary-color: #f8f1ff;
 $accent-color: #6c5ce7;
@@ -734,21 +378,21 @@ $dark-color: #2d3436;
 $light-color: #f9f9f9;
 $gray-color: #636e72;
 
-// Status colors
+// 状态颜色
 $status-pending: #f39c12;
 $status-confirmed: #2ecc71;
 $status-completed: #3498db;
 $status-cancelled: #95a5a6;
 $status-rejected: #e74c3c;
 
-// Page base styles
+// 页面基础样式
 .reservations-page {
   padding-top: 70px;
   min-height: 100vh;
   background-color: #fcfcfc;
 }
 
-// Page header
+// 页面头部
 .page-header {
   background: linear-gradient(135deg, $secondary-color, #fff);
   padding: 60px 20px;
@@ -769,16 +413,17 @@ $status-rejected: #e74c3c;
     color: $gray-color;
     margin: 0;
   }
+
 }
 
-// Page content
+// 页面内容
 .page-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 50px;
 }
 
-// Status filter
+// 状态筛选
 .filter-section {
   margin-bottom: 30px;
 
@@ -810,7 +455,7 @@ $status-rejected: #e74c3c;
   }
 }
 
-// Reservation card
+// 预订卡片
 .reservation-card {
   background: white;
   border-radius: 16px;
@@ -936,7 +581,7 @@ $status-rejected: #e74c3c;
   }
 }
 
-// Loading state
+// 加载中状态
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -960,7 +605,7 @@ $status-rejected: #e74c3c;
   }
 }
 
-// Empty state
+// 空状态
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -991,7 +636,7 @@ $status-rejected: #e74c3c;
   }
 }
 
-// Cancel dialog
+// 取消对话框
 .cancel-dialog {
   .cancel-warning {
     display: flex;
@@ -1006,7 +651,7 @@ $status-rejected: #e74c3c;
   }
 }
 
-// Reservation code dialog
+// 预订码对话框
 .qrcode-dialog {
   .qrcode-content {
     text-align: center;
@@ -1023,367 +668,12 @@ $status-rejected: #e74c3c;
   }
 }
 
-// Review dialog
-.review-dialog {
-  :deep(.el-dialog__header) {
-    display: none;
-  }
-  
-  :deep(.el-dialog__body) {
-    padding: 0;
-  }
-  
-  :deep(.el-dialog__footer) {
-    display: none;
-  }
-  
-  :deep(.el-dialog) {
-    border-radius: 16px;
-    overflow: hidden;
-    background: linear-gradient(to bottom, #fff5f6, #fff);
-  }
-  
-  .review-content {
-    padding: 30px;
-    
-    .review-restaurant-name {
-      font-size: 24px;
-      font-weight: 700;
-      color: $dark-color;
-      margin: 0 0 25px;
-      text-align: center;
-      position: relative;
-      
-      &:after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        width: 50px;
-        height: 3px;
-        background: linear-gradient(to right, $primary-color, lighten($primary-color, 20%));
-        transform: translateX(-50%);
-        border-radius: 3px;
-      }
-    }
-  }
-  
-  .custom-review-form {
-    .form-section {
-      margin-bottom: 25px;
-      
-      .form-label {
-        display: block;
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        color: $dark-color;
-      }
-      
-      .custom-rating {
-        display: flex;
-        align-items: center;
-        
-        .rating-star {
-          cursor: pointer;
-          margin-right: 5px;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          
-          .star-icon {
-            width: 30px;
-            height: 30px;
-            fill: #ddd;
-            transition: all 0.2s ease;
-            
-            &.hover {
-              fill: #FFD700;
-              transform: scale(1.1);
-            }
-          }
-          
-          &.active .star-icon {
-            fill: #FFD700;
-          }
-          
-          &:hover {
-            transform: scale(1.1);
-          }
-        }
-        
-        .rating-text {
-          margin-left: 15px;
-          font-size: 16px;
-          color: $dark-color;
-          font-weight: 500;
-        }
-      }
-      
-      .custom-textarea {
-        width: 100%;
-        padding: 15px;
-        border-radius: 12px;
-        border: 2px solid rgba(0,0,0,0.1);
-        background-color: rgba(255,255,255,0.8);
-        font-size: 16px;
-        transition: all 0.3s ease;
-        resize: vertical;
-        min-height: 120px;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        
-        &:focus {
-          border-color: $primary-color;
-          box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
-          outline: none;
-        }
-        
-        &.error {
-          border-color: $status-rejected;
-          box-shadow: 0 0 0 3px rgba($status-rejected, 0.2);
-        }
-      }
-      
-      .error-message {
-        color: $status-rejected;
-        font-size: 14px;
-        display: block;
-        margin-top: 5px;
-      }
-      
-      .custom-upload-area {
-        .upload-preview {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 15px;
-          
-          .preview-item {
-            width: 120px;
-            height: 120px;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            
-            .preview-image {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-              transition: transform 0.3s ease;
-            }
-            
-            &:hover .preview-image {
-              transform: scale(1.05);
-            }
-            
-            .remove-btn {
-              position: absolute;
-              top: 5px;
-              right: 5px;
-              width: 24px;
-              height: 24px;
-              border-radius: 50%;
-              background: rgba(0,0,0,0.5);
-              border: none;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
-              opacity: 0;
-              transition: all 0.2s ease;
-              
-              .remove-icon {
-                width: 16px;
-                height: 16px;
-                fill: white;
-              }
-            }
-            
-            &:hover .remove-btn {
-              opacity: 1;
-            }
-          }
-          
-          .upload-btn {
-            width: 120px;
-            height: 120px;
-            border-radius: 12px;
-            border: 2px dashed rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background-color: rgba(255,255,255,0.5);
-            
-            .upload-icon {
-              width: 30px;
-              height: 30px;
-              fill: $primary-color;
-              margin-bottom: 8px;
-            }
-            
-            span {
-              font-size: 14px;
-              color: $gray-color;
-            }
-            
-            &:hover {
-              border-color: $primary-color;
-              background-color: rgba($primary-color, 0.05);
-            }
-          }
-        }
-      }
-      
-      .custom-video-upload {
-        .video-preview {
-          position: relative;
-          width: 100%;
-          max-width: 400px;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-          
-          .preview-video {
-            width: 100%;
-            display: block;
-          }
-          
-          .remove-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.5);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            
-            .remove-icon {
-              width: 20px;
-              height: 20px;
-              fill: white;
-            }
-            
-            &:hover {
-              background: rgba(0,0,0,0.7);
-              transform: scale(1.1);
-            }
-          }
-        }
-        
-        .video-upload-btn {
-          width: 100%;
-          max-width: 400px;
-          height: 150px;
-          border-radius: 12px;
-          border: 2px dashed rgba(0,0,0,0.1);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          background-color: rgba(255,255,255,0.5);
-          
-          .upload-icon {
-            width: 40px;
-            height: 40px;
-            fill: $primary-color;
-            margin-bottom: 10px;
-          }
-          
-          span {
-            font-size: 16px;
-            color: $gray-color;
-          }
-          
-          &:hover {
-            border-color: $primary-color;
-            background-color: rgba($primary-color, 0.05);
-          }
-        }
-      }
-    }
-  }
-  
-  .review-actions {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px 30px 30px;
-    gap: 15px;
-    
-    .cancel-btn {
-      padding: 12px 25px;
-      border-radius: 30px;
-      border: none;
-      background-color: #f1f1f1;
-      color: $gray-color;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        background-color: #e5e5e5;
-      }
-    }
-    
-    .submit-btn {
-      padding: 12px 30px;
-      border-radius: 30px;
-      border: none;
-      background: linear-gradient(135deg, $primary-color, lighten($primary-color, 10%));
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 120px;
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba($primary-color, 0.4);
-      }
-      
-      &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-      }
-      
-      .loading-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 1s linear infinite;
-        margin-right: 10px;
-      }
-    }
-  }
-}
-
-// Animation
+// 动画
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-// Responsive styles
+// 响应式样式
 @media (max-width: 768px) {
   .page-header {
     padding: 40px 20px;

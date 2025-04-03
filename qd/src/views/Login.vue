@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-box">
       <div class="login-header">
-        <h1>{{ isLogin ? 'Restaurant ReserveNow' : 'User Registration' }}</h1>
+        <h1>{{ isLogin ? 'Restaurant Reservation System' : 'User Registration' }}</h1>
         <div class="header-decoration"></div>
       </div>
       

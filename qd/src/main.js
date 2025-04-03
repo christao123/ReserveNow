@@ -8,7 +8,7 @@ import "element-plus/dist/index.css";
 
 const app = createApp(App);
 
-// Register all Element Plus icons
+// 注册所有Element Plus图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }

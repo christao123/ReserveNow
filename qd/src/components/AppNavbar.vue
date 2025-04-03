@@ -6,7 +6,7 @@
         <div class="logo-container">
           <span class="logo-icon"><el-icon><KnifeFork /></el-icon></span>
           <div class="logo-text">
-            <h1 class="logo-title">ReserveNow</h1>
+            <h1 class="logo-title">Restaurant Reservation</h1>
             <span class="logo-tagline">Explore Flavors, Book Experience</span>
           </div>
         </div>

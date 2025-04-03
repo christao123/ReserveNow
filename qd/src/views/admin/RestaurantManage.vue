@@ -242,13 +242,26 @@
         
         <div class="form-group">
           <label for="cuisine">Cuisine</label>
-          <div class="input-container">
-            <input 
+          <div class="cuisine-select-container">
+            <select 
               id="cuisine" 
-              type="text"
               v-model="restaurantForm.cuisine"
-              placeholder="Enter cuisine type"
-            />
+              class="cuisine-select"
+            >
+              <option value="Cantonese">Cantonese</option>
+              <option value="Sichuan">Sichuan</option>
+              <option value="Hunan">Hunan</option>
+              <option value="Shandong">Shandong</option>
+              <option value="Beijing">Beijing</option>
+              <option value="Northeast">Northeast</option>
+              <option value="Western">Western</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Korean">Korean</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="cuisine-select-arrow">
+              <el-icon><ArrowDown /></el-icon>
+            </div>
           </div>
         </div>
         
@@ -784,54 +797,54 @@ const validateBusinessHours = (value) => {
   return true
 }
 
-// Add restaurant
+// 添加餐厅
 const addRestaurant = async () => {
   try {
-    // Submit directly in array format, no need to convert photos to string
+    // 直接使用数组格式提交，不需要将photos转为字符串
     await request({
       url: '/admin/restaurants',
       method: 'post',
       data: restaurantForm
     })
-    ElMessage.success('Added successfully')
+    ElMessage.success('添加成功')
     dialogVisible.value = false
     fetchRestaurantList()
   } catch (error) {
-    console.error('Failed to add restaurant:', error)
+    console.error('添加餐厅失败:', error)
   }
 }
 
-// Update restaurant
+// 更新餐厅
 const updateRestaurant = async () => {
-  // Check if ID exists
+  // 检查是否有ID
   if (!restaurantForm.restaurantId && restaurantForm.id) {
     restaurantForm.restaurantId = restaurantForm.id
   }
   
   if (!restaurantForm.restaurantId) {
-    console.error('Failed to update restaurant: Missing restaurant ID', restaurantForm)
-    ElMessage.error('Update failed: Missing restaurant ID')
+    console.error('更新餐厅失败: 缺少餐厅ID', restaurantForm)
+    ElMessage.error('更新失败：缺少餐厅ID')
     return
   }
   
-  console.log('Updating restaurant ID:', restaurantForm.restaurantId)
+  console.log('更新餐厅ID:', restaurantForm.restaurantId)
   
   try {
-    // Submit directly in array format, no need to convert photos to string
+    // 直接使用数组格式提交，不需要将photos转为字符串
     await request({
       url: `/admin/restaurants/${restaurantForm.restaurantId}`,
       method: 'put',
       data: restaurantForm
     })
-    ElMessage.success('Updated successfully')
+    ElMessage.success('更新成功')
     dialogVisible.value = false
     fetchRestaurantList()
   } catch (error) {
-    console.error('Failed to update restaurant:', error)
+    console.error('更新餐厅失败:', error)
   }
 }
 
-// Pagination related
+// 分页相关
 const handleSizeChange = (val) => {
   pageSize.value = val
   fetchRestaurantList()
@@ -842,7 +855,7 @@ const handleCurrentChange = (val) => {
   fetchRestaurantList()
 }
 
-// Get status tag type
+// 获取状态标签类型
 const getStatusType = (status) => {
   const typeMap = {
     0: 'info',
@@ -853,23 +866,23 @@ const getStatusType = (status) => {
   return typeMap[status] || 'info'
 }
 
-// Get status text
+// 获取状态文本
 const getStatusText = (status) => {
   const textMap = {
-    0: 'Pending Review',
-    1: 'Approved',
-    2: 'Closed',
-    3: 'Operating'
+    0: '待审核',
+    1: '审核通过',
+    2: '关闭',
+    3: '运营'
   }
-  return textMap[status] || 'Unknown Status'
+  return textMap[status] || '未知状态'
 }
 
-// Add photo removal method
+// 添加照片移除方法
 const removePhoto = (index) => {
   restaurantForm.photos.splice(index, 1)
 }
 
-// Get restaurant details
+// 获取餐厅详情
 const fetchRestaurantDetail = async (id) => {
   try {
     const res = await request({
@@ -877,7 +890,7 @@ const fetchRestaurantDetail = async (id) => {
       method: 'get'
     })
     
-    // Process returned data, ensure photos field is an array
+    // 处理返回的数据，确保photos字段是数组
     const data = res.data
     
     if (data && data.photos && typeof data.photos === 'string') {
@@ -888,31 +901,31 @@ const fetchRestaurantDetail = async (id) => {
     
     return data
   } catch (error) {
-    console.error('Failed to get restaurant details:', error)
-    ElMessage.error('Failed to get restaurant details')
+    console.error('获取餐厅详情失败:', error)
+    ElMessage.error('获取餐厅详情失败')
     return null
   }
 }
 
-// Handle status change
+// 处理状态变更
 const handleStatusChange = async (row) => {
-  console.log('Restaurant data for status change:', row)
-  // Get restaurant details to ensure latest data
+  console.log('更改状态的餐厅数据:', row)
+  // 获取餐厅详情以确保有最新数据
   const id = row.id || row.restaurantId
   if (!id) {
-    ElMessage.error('Restaurant ID does not exist, cannot change status')
+    ElMessage.error('餐厅ID不存在，无法更改状态')
     return
   }
   
   currentRestaurantId.value = id
-  currentStatus.value = row.status.toString() // Ensure it's a string
+  currentStatus.value = row.status.toString() // 确保是字符串
   statusDialogVisible.value = true
 }
 
-// Submit status change
+// 提交状态变更
 const submitStatusChange = async () => {
   if (!currentRestaurantId.value) {
-    ElMessage.error('Restaurant ID does not exist, cannot change status')
+    ElMessage.error('餐厅ID不存在，无法更改状态')
     return
   }
   
@@ -922,30 +935,30 @@ const submitStatusChange = async () => {
       method: 'put',
       params: { status: parseInt(currentStatus.value) }
     })
-    ElMessage.success('Status updated successfully')
+    ElMessage.success('状态更新成功')
     statusDialogVisible.value = false
-    fetchRestaurantList() // Refresh list
+    fetchRestaurantList() // 刷新列表
   } catch (error) {
-    console.error('Failed to update restaurant status:', error)
-    ElMessage.error('Failed to update restaurant status')
+    console.error('更新餐厅状态失败:', error)
+    ElMessage.error('更新餐厅状态失败')
   }
 }
 
-// Initialize
+// 初始化
 onMounted(() => {
-  // Get user info from localStorage
+  // 从localStorage获取用户信息
   try {
     const userInfoStr = localStorage.getItem('userInfo')
     if (userInfoStr) {
       const userInfo = JSON.parse(userInfoStr)
-      userRole.value = Number(userInfo.role || 0) // Ensure conversion to number
-      console.log('Current user role:', userRole.value, typeof userRole.value)
+      userRole.value = Number(userInfo.role || 0) // 确保转换为数字
+      console.log('当前用户角色:', userRole.value, typeof userRole.value)
     }
   } catch (error) {
-    console.error('Failed to get user info:', error)
+    console.error('获取用户信息失败:', error)
   }
   
-  // Ensure restaurant list is fetched after getting user role
+  // 确保在获取用户角色后再获取餐厅列表
   fetchRestaurantList()
 })
 </script>
@@ -1607,6 +1620,7 @@ onMounted(() => {
   }
 }
 
+/* 响应式适配 */
 @media (max-width: 768px) {
   .search-form {
     flex-direction: column;
@@ -1643,6 +1657,7 @@ onMounted(() => {
   }
 }
 
+/* 添加下拉选择框的样式 */
 .el-select {
   width: 180px;
 }

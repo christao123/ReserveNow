@@ -6,7 +6,7 @@
           <div class="footer-col footer-brand">
             <div class="logo">
               <span class="icon-utensils"><el-icon><KnifeFork /></el-icon></span>
-              <h2>ReserveNow</h2>
+              <h2>Restaurant Reservation</h2>
             </div>
             <p class="brand-description">
               The best platform to discover and book tables at the finest restaurants in your city. We make dining reservations simple and enjoyable.
@@ -35,6 +35,17 @@
               <li><router-link to="/reservations">My Reservations</router-link></li>
               <li><router-link to="/favorites">My Favorites</router-link></li>
               <li><router-link to="/profile">My Profile</router-link></li>
+            </ul>
+          </div>
+          
+          <div class="footer-col footer-links">
+            <h3>Support</h3>
+            <ul>
+              <li><router-link to="/">Settings</router-link></li>
+              <li><router-link to="/admin/dashboard">Admin Dashboard</router-link></li>
+              <li><router-link to="/admin/restaurants">Restaurant Management</router-link></li>
+              <li><router-link to="/admin/tables">Table Management</router-link></li>
+              <li><router-link to="/admin/users">User Management</router-link></li>
             </ul>
           </div>
           
@@ -74,6 +85,16 @@
               <el-icon><Money /></el-icon>
             </span>
           </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-app-badge">
+      <div class="badge-content">
+        <el-icon><Iphone /></el-icon>
+        <div class="badge-text">
+          <span>Download our</span>
+          <strong>Mobile App</strong>
         </div>
       </div>
     </div>

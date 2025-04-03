@@ -10,10 +10,10 @@
         <h2>Discover and Book the Best Restaurants</h2>
         <p>Browse our carefully curated restaurants and book your table with just a few clicks</p>
         <div class="banner-actions">
-          <el-button type="primary" size="large" class="action-btn explore-btn" @click="goToBottom">
+          <el-button type="primary" size="large" class="action-btn explore-btn">
             <el-icon><Compass /></el-icon> Restaurants
           </el-button>
-          <el-button size="large" class="action-btn learn-btn" @click="router.push('/explore')">
+          <el-button size="large" class="action-btn learn-btn">
             <el-icon><QuestionFilled /></el-icon> About Us
           </el-button>
         </div>
@@ -338,13 +338,6 @@ const handleSearch = () => {
   fetchRestaurants(true);
 };
 
-const goToBottom = () => {
-  window.scrollTo({
-    top: 500,
-    behavior: 'smooth'
-  });
-};
-
 // Handle filter change
 const handleFilterChange = () => {
   fetchRestaurants(true);
@@ -622,11 +615,12 @@ $accent-color: #6c5ce7;
       }
       
       .learn-btn {
-        background-color: rgb(51 234 188 / 70%);
+        background-color: rgba(255, 255, 255, 0.15);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.3);
         
         &:hover {
+          background-color: rgba(255, 255, 255, 0.25);
           transform: translateY(-3px);
           box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }

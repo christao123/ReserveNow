@@ -6,14 +6,14 @@ const service = axios.create({
   timeout: 5000,
 });
 
-// Request interceptor
+// 请求拦截器
 service.interceptors.request.use(
   (config) => {
-    // Get token from cookie
+    // 从cookie中获取token
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     
     console.log(token);
-    // Add token to request header if exists
+    // 如果有token则添加到请求头
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -25,18 +25,18 @@ service.interceptors.request.use(
   }
 );
 
-// Response interceptor
+// 响应拦截器
 service.interceptors.response.use(
   (response) => {
     const res = response.data;
     if (res.code !== 200) {
-      ElMessage.error(res.message || "Error");
-      return Promise.reject(new Error(res.message || "Error"));
+      ElMessage.error(res.message || "错误");
+      return Promise.reject(new Error(res.message || "错误"));
     }
     return res;
   },
   (error) => {
-    ElMessage.error(error.message || "Request failed");
+    ElMessage.error(error.message || "请求错误");
     return Promise.reject(error);
   }
 );

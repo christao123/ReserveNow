@@ -168,6 +168,7 @@ const goToRegister = () => {
 </script>
 
 <style lang="scss" scoped>
+// 变量
 $primary-color: #ff4757;
 $secondary-color: #f8f1ff;
 $accent-color: #6c5ce7;
@@ -175,11 +176,13 @@ $dark-color: #2d3436;
 $light-color: #f9f9f9;
 $gray-color: #636e72;
 
+// 页面基础样式
 .explore-page {
   padding-top: 70px;
   background-color: #fcfcfc;
 }
 
+// 英雄区域
 .hero-section {
   position: relative;
   min-height: 600px;
@@ -334,6 +337,7 @@ $gray-color: #636e72;
   }
 }
 
+// 体验流程
 .process-section {
   padding: 80px 20px;
   background: $secondary-color;

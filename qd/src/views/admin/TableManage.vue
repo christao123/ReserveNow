@@ -142,6 +142,7 @@
               <option value="Standard">Standard Table</option>
               <option value="Large">Large Table</option>
               <option value="VIP">VIP Room</option>
+              <option value="Private">Private Room</option>
             </select>
             <div class="select-arrow">
               <el-icon><ArrowDown /></el-icon>
@@ -464,7 +465,6 @@ const validateAndSubmit = () => {
 // Add table
 const addTable = async () => {
   try {
-    tableForm.id = ''
     await request({
       url: '/admin/tables',
       method: 'post',

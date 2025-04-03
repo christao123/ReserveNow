@@ -367,7 +367,7 @@
     font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
   }
   
-  /* Neomorphic Card */
+  /* 拟态卡片 */
   .neomorphic-card {
     background: #e6e7ee;
     border-radius: 24px;
@@ -383,7 +383,7 @@
     transform: translateY(-3px);
   }
   
-  /* Table Section Styles */
+  /* 表格部分样式 */
   .table-section {
     min-height: 500px;
     overflow: hidden;
@@ -433,7 +433,7 @@
     font-size: 14px;
   }
   
-  /* Pagination Styles */
+  /* 分页样式 */
   .pagination {
     display: flex;
     justify-content: flex-end;
@@ -483,7 +483,7 @@
     cursor: not-allowed;
   }
   
-  /* Operation Buttons */
+  /* 操作按钮 */
   .operation-buttons {
     display: flex;
     justify-content: center;
@@ -527,7 +527,7 @@
     color: white;
   }
   
-  /* Status Tags */
+  /* 状态标签 */
   .status-tag {
     display: inline-block;
     padding: 6px 12px;
@@ -548,7 +548,7 @@
     color: white;
   }
   
-  /* Detail Dialog */
+  /* 详情对话框 */
   .detail-dialog-overlay {
     position: fixed;
     top: 0;
@@ -666,7 +666,7 @@
                 -6px -6px 12px #ffffff;
   }
   
-  /* Staff Detail Styles */
+  /* 员工详情样式 */
   .staff-detail {
     padding: 10px;
   }
@@ -693,7 +693,7 @@
     color: #5e6687;
   }
   
-  /* Loading Animation */
+  /* 加载动画 */
   .loading-container {
     display: flex;
     justify-content: center;
@@ -719,7 +719,7 @@
     }
   }
   
-  /* Dark Mode Adaptation */
+  /* 深色模式适配 */
   @media (prefers-color-scheme: dark) {
     .staff-manage-container {
       background-color: #2d3748;

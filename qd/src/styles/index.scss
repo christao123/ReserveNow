@@ -1,10 +1,11 @@
-
+// 重置样式
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+// 全局变量
 :root {
   --primary-color: #409eff;
   --success-color: #67c23a;
@@ -13,6 +14,7 @@
   --info-color: #909399;
 }
 
+// 全局样式
 html,
 body {
   height: 100%;

@@ -1,8 +1,8 @@
 /**
- * Format date
- * @param {string|Date} date Date to format
- * @param {string} fmt Format pattern, default yyyy-MM-dd HH:mm:ss
- * @returns {string} Formatted date string
+ * 格式化日期
+ * @param {string|Date} date 需要格式化的日期
+ * @param {string} fmt 格式化模式，默认 yyyy-MM-dd HH:mm:ss
+ * @returns {string} 格式化后的日期字符串
  */
 export function formatDate(date, fmt = 'yyyy-MM-dd HH:mm:ss') {
   if (!date) return '';
@@ -12,13 +12,13 @@ export function formatDate(date, fmt = 'yyyy-MM-dd HH:mm:ss') {
   }
   
   const o = {
-    'M+': date.getMonth() + 1, // Month
-    'd+': date.getDate(), // Day
-    'H+': date.getHours(), // Hour
-    'm+': date.getMinutes(), // Minute
-    's+': date.getSeconds(), // Second
-    'q+': Math.floor((date.getMonth() + 3) / 3), // Quarter
-    'S': date.getMilliseconds() // Millisecond
+    'M+': date.getMonth() + 1, // 月份
+    'd+': date.getDate(), // 日
+    'H+': date.getHours(), // 小时
+    'm+': date.getMinutes(), // 分
+    's+': date.getSeconds(), // 秒
+    'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+    'S': date.getMilliseconds() // 毫秒
   };
 
   if (/(y+)/.test(fmt)) {

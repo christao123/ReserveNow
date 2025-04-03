@@ -67,7 +67,7 @@
       </main>
     </div>
 
-    <!-- Add personal information dialog -->
+    <!-- 添加个人资料对话框 -->
     <div class="profile-dialog" v-if="profileDialogVisible">
       <div class="profile-dialog-content neomorphic-panel">
         <div class="profile-dialog-header">
@@ -78,7 +78,7 @@
         </div>
         
         <div class="profile-container">
-          <!-- Avatar upload section -->
+          <!-- 头像上传区域 -->
           <div class="avatar-section">
             <div class="avatar-uploader neomorphic-upload" @click="triggerFileInput">
               <img v-if="userForm.avatar" :src="userForm.avatar" class="avatar" />
@@ -111,7 +111,7 @@
               >Change Password</button>
             </div>
 
-            <!-- Basic Info Form -->  
+            <!-- 基本信息表单 -->
             <div v-show="activeTab === 'info'" class="tab-content">
               <div class="form-group">
                 <label>Username</label>
@@ -138,6 +138,7 @@
               </div>
             </div>
 
+            <!-- 修改密码表单 -->
             <div v-show="activeTab === 'password'" class="tab-content">
               <div class="form-group">
                 <label>Current Password</label>
@@ -210,11 +211,11 @@ const route = useRoute()
 const isCollapsed = ref(false)
 const currentRoute = computed(() => route.path)
 
-// Get user information and role
+// 获取用户信息和角色
 const userInfo = ref(JSON.parse(localStorage.getItem('userInfo') || '{}'));
 const userRole = ref(userInfo.value.role || 0);
 
-// Filter menu items based on user role
+// 根据用户角色过滤菜单项
 const menuItems = computed(() => {
   // 0: Admin, 1: Restaurant Manager, 2: User, 3: Staff
   
@@ -285,7 +286,7 @@ const navigate = (path) => {
   router.push(path)
 }
 
-// Handle dropdown menu commands
+// 处理下拉菜单命令
 const handleCommand = (command) => {
   if (command === 'logout') {
     ElMessageBox.confirm(
@@ -312,7 +313,7 @@ const handleCommand = (command) => {
   }
 };
 
-// Profile related
+// 个人资料相关
 const profileDialogVisible = ref(false)
 const activeTab = ref('info')
 const fileInput = ref(null)
@@ -356,7 +357,7 @@ const passwordRules = {
 
 const passwordFormRef = ref(null)
 
-// Get user information
+// 获取用户信息
 const fetchUserInfo = async () => {
   try {
     const res = await request({
@@ -375,7 +376,7 @@ const fetchUserInfo = async () => {
   }
 }
 
-// Update user information
+// 更新用户信息
 const handleUpdateProfile = async () => {
   try {
     const res = await request({
@@ -396,9 +397,9 @@ const handleUpdateProfile = async () => {
   }
 }
 
-// Change password
+// 修改密码
 const handleChangePassword = async () => {
-  // Validate password
+  // 验证密码
   if (!passwordForm.oldPassword) {
     ElMessage.error('Please enter current password');
     return;
@@ -433,7 +434,7 @@ const handleChangePassword = async () => {
     if (res.code === 200) {
       ElMessage.success('Password changed successfully');
       activeTab.value = 'info';
-      // Clear password form
+      // 清空密码表单
       passwordForm.oldPassword = '';
       passwordForm.newPassword = '';
       passwordForm.confirmPassword = '';
@@ -444,7 +445,7 @@ const handleChangePassword = async () => {
   }
 };
 
-// Add time formatting function
+// 添加时间格式化函数
 const formatCreatedTime = (timestamp) => {
   if (!timestamp) return 'Unknown Time';
   const date = new Date(timestamp);
@@ -456,12 +457,12 @@ const formatCreatedTime = (timestamp) => {
   return `${year}-${month}-${day} ${hour}:${minute}`;
 };
 
-// Add file selection trigger function
+// 添加文件选择触发函数
 const triggerFileInput = () => {
   fileInput.value.click();
 };
 
-// Add file change handler function
+// 添加文件变更处理函数
 const handleFileChange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -485,7 +486,7 @@ const handleFileChange = (e) => {
   handleAvatarUpload({ file });
 };
 
-// Add avatar upload handler function
+// 添加头像上传处理函数
 const handleAvatarUpload = async ({ file }) => {
   try {
     const formData = new FormData();
@@ -502,20 +503,20 @@ const handleAvatarUpload = async ({ file }) => {
     
     if (res.code === 200) {
       userForm.avatar = res.data;
-      ElMessage.success('Avatar uploaded successfully');
+      ElMessage.success('头像上传成功');
     }
   } catch (error) {
-    console.error('Failed to upload avatar:', error);
-    ElMessage.error('Failed to upload avatar');
+    console.error('头像上传失败:', error);
+    ElMessage.error('头像上传失败');
   }
 };
 
-// Check access permission when component is mounted
+// 组件挂载时检查是否有访问权限
 onMounted(() => {
-  // If path includes admin, check permission
+  // 如果路径包含admin，则检查权限
   if (route.path.includes('/admin')) {
     const role = userInfo.value.role;
-    // If regular user (role === 2) or not logged in, redirect to home page
+    // 如果是普通用户(role === 2)或者未登录，重定向到首页
     if (role === 2 || !userInfo.value.token) {
       ElMessage.error('You do not have permission to access the admin panel');
       router.push('/');
@@ -818,7 +819,7 @@ onMounted(() => {
   color: #7f83a2;
 }
 
-/* Scrollbar styles */
+/* 滚动条样式 */
 .sidebar-nav::-webkit-scrollbar {
   width: 6px;
 }
@@ -836,7 +837,7 @@ onMounted(() => {
   background: #a0aec0;
 }
 
-/* Adapt to collapsed state */
+/* 适配折叠状态 */
 .sidebar-collapsed .nav-item {
   padding: 14px 10px;
   justify-content: center;
@@ -851,7 +852,7 @@ onMounted(() => {
   padding: 10px;
 }
 
-/* Responsive */
+/* 响应式 */
 @media (max-width: 768px) {
   .admin-layout .main-content {
     margin-left: 0;
@@ -873,7 +874,7 @@ onMounted(() => {
   }
 }
 
-/* Dark mode adaptation */
+/* 适配深色模式 */
 @media (prefers-color-scheme: dark) {
   .admin-layout {
     background-color: #2d3748;
@@ -1253,7 +1254,7 @@ onMounted(() => {
   background: #4a6cf7;
 }
 
-/* Dark mode adaptation */
+/* 深色模式适配 */
 @media (prefers-color-scheme: dark) {
   .profile-dialog-content {
     background: #2d3748;
@@ -1343,7 +1344,7 @@ onMounted(() => {
   }
 }
 
-/* Responsive */
+/* 响应式适配 */
 @media (max-width: 768px) {
   .profile-dialog-content {
     width: 95%;
