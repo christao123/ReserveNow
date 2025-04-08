@@ -398,16 +398,13 @@ const fetchReservations = async () => {
         restaurantName: item.restaurantName,
         restaurantPhoto: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop', // Default image
         address: item.tableType, 
-        reservationDate: new Date(item.reservationTime),
-        reservationTime: new Date(item.reservationTime).toLocaleTimeString('zh-CN', {
-          hour: '2-digit',
-          minute: '2-digit'
-        }),
+        reservationDate: item.reservationTime,
+        reservationTime: item.reservationTime.split('T')[1].substring(0, 5),
         numberOfGuests: item.personCount,
         specialRequests: item.remarks,
         status: item.statusValue,
         statusText: item.statusText,
-        reservationCode: `RES${String(item.id).padStart(6, '0')}`, // Generate reservation code
+        reservationCode: `RES${String(item.id).padStart(6, '0')}`,
         cancelReason: item.cancelReason,
         reviewed: item.reviewed || false
       }));
@@ -462,13 +459,17 @@ const getStatusCount = (status) => {
 };
 
 // Format date
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long'
-  });
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  
+  const date = dateString.split('T')[0];
+  const [year, month, day] = date.split('-');
+  
+  const dateObj = new Date(year, month - 1, day);
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const weekday = weekdays[dateObj.getDay()];
+  
+  return `${weekday} ${year}-${month}-${day}`;
 };
 
 // Show cancel dialog

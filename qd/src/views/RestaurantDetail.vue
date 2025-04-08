@@ -1036,6 +1036,7 @@ const fetchTableReservations = async () => {
   try {
     // Get selected date in string format, format is YYYY-MM-DD
     const selectedDateString = selectedDate.value.toISOString().split("T")[0];
+    console.log(selectedDateString);
 
     const response = await request({
       url: `/reservations/table/${selectedTable.value.id}/future`,

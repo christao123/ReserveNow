@@ -127,7 +127,7 @@
             <td>{{ row.id }}</td>
             <td>{{ row.restaurantName }}</td>
             <td>{{ row.tableType }}</td>
-            <td>{{ formatDateTime(row.reservationTime) }}</td>
+            <td>{{ formatReservationTime(row.reservationTime) }}</td>
             <td>{{ row.personCount }} guests</td>
             <td>
               <span class="status-tag" :class="getStatusType(row.statusValue)">
@@ -135,7 +135,7 @@
               </span>
             </td>
             <td :title="row.remarks">{{ row.remarks || 'None' }}</td>
-            <td>{{ formatDateTime(row.createdAt) }}</td>
+            <td>{{ formatCreatedTime(row.createdAt) }}</td>
             <td>
               <div class="operation-buttons">
                 <!-- Confirm button -->
@@ -256,7 +256,7 @@
             </div>
             <div class="detail-row">
               <div class="detail-label">Reservation Time:</div>
-              <div class="detail-value">{{ formatDateTime(selectedReservation.reservationTime) }}</div>
+              <div class="detail-value">{{ formatReservationTime(selectedReservation.reservationTime) }}</div>
             </div>
             <div class="detail-row">
               <div class="detail-label">Guests:</div>
@@ -276,11 +276,11 @@
             </div>
             <div class="detail-row">
               <div class="detail-label">Created Time:</div>
-              <div class="detail-value">{{ formatDateTime(selectedReservation.createdAt) }}</div>
+              <div class="detail-value">{{ formatCreatedTime(selectedReservation.createdAt) }}</div>
             </div>
             <div class="detail-row">
               <div class="detail-label">Updated Time:</div>
-              <div class="detail-value">{{ formatDateTime(selectedReservation.updatedAt) }}</div>
+              <div class="detail-value">{{ formatCreatedTime(selectedReservation.updatedAt) }}</div>
             </div>
           </div>
         </div>
@@ -510,13 +510,25 @@ const getRestaurantName = (id) => {
   return restaurant ? restaurant.name : 'Unknown Restaurant'
 }
 
-// Date time formatting
-const formatDateTime = (dateStr) => {
+const formatReservationTime = (dateStr) => {
   if (!dateStr) return '';
+  
+  const [datePart, timePart] = dateStr.split('+')[0].split('.')[0].split('T');
+  if (!datePart || !timePart) return dateStr;
+  
+  const [year, month, day] = datePart.split('-');
+  const [hours, minutes] = timePart.split(':');
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
+const formatCreatedTime = (dateStr) => {
+  if (!dateStr) return '';
+  
+
   const date = new Date(dateStr);
   if (isNaN(date.getTime())) return dateStr;
   
-  // Format as YYYY-MM-DD HH:MM
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');

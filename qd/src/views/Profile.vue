@@ -5,13 +5,13 @@
       <div class="gradient-sphere"></div>
       <div class="gradient-sphere"></div>
       <div class="gradient-sphere"></div>
-    </div>
+            </div>
     
     <!-- Back Button -->
     <div class="back-button" @click="goBack">
       <i class="fas fa-arrow-left"></i>
       <span>Back to Home</span>
-    </div>
+          </div>
 
     <!-- Profile Main Container -->
     <div class="profile-content">
@@ -24,7 +24,7 @@
               <div class="avatar-overlay" @click="handleAvatarUpload">
                 <i class="fas fa-camera"></i>
                 <span>Change Avatar</span>
-              </div>
+        </div>
             </div>
             <div class="user-status" :class="userInfo.status === 'Active' ? 'active' : 'inactive'">
               <span class="status-dot"></span>
@@ -37,8 +37,8 @@
               <i class="fas fa-user-shield"></i>
               {{ userInfo.role }}
             </div>
-          </div>
-        </div>
+      </div>
+    </div>
 
         <div class="info-grid">
           <div class="info-card glass-effect-light">
@@ -46,7 +46,7 @@
             <div class="info-content">
               <label>Email Account</label>
               <span>{{ userInfo.email }}</span>
-            </div>
+          </div>
             <div class="card-decoration"></div>
           </div>
 
@@ -57,7 +57,7 @@
               <span>{{ formatDate(userInfo.createdAt) }}</span>
             </div>
             <div class="card-decoration"></div>
-          </div>
+            </div>
 
           <div class="info-card glass-effect-light">
             <i class="fas fa-shield-alt"></i>
@@ -66,8 +66,8 @@
               <span>Regular Member</span>
             </div>
             <div class="card-decoration"></div>
-          </div>
-        </div>
+            </div>
+            </div>
 
         <div class="action-buttons">
           <button class="btn-edit glass-button" @click="startEdit">
@@ -80,8 +80,8 @@
             <span>Change Password</span>
             <div class="button-effect"></div>
           </button>
+          </div>
         </div>
-      </div>
 
       <!-- Account Security Card -->
       <div class="security-card glass-effect">
@@ -186,7 +186,7 @@
           <button class="btn-close" @click="closeEditDialog">
             <i class="fas fa-times"></i>
           </button>
-        </div>
+          </div>
 
         <div class="edit-form scrollable-content">
           <!-- Avatar Upload Section -->
@@ -231,7 +231,7 @@
                 <button type="button" class="btn-toggle" @click="togglePasswordFields">
                   <i class="fas fa-times"></i>
                 </button>
-              </div>
+          </div>
 
               <div class="form-group">
                 <label class="form-label">
@@ -247,8 +247,8 @@
                   <button type="button" class="toggle-password" @click="togglePassword('old')">
                     <i class="fas" :class="showPassword.old ? 'fa-eye-slash' : 'fa-eye'"></i>
                   </button>
-                </div>
-              </div>
+        </div>
+    </div>
 
               <div class="form-group">
                 <label class="form-label">
@@ -281,7 +281,7 @@
                   <button type="button" class="toggle-password" @click="togglePassword('confirm')">
                     <i class="fas" :class="showPassword.confirm ? 'fa-eye-slash' : 'fa-eye'"></i>
                   </button>
-                </div>
+  </div>
               </div>
             </div>
 
@@ -464,10 +464,10 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       position: relative;
 
       .avatar-wrapper {
-        width: 120px;
-        height: 120px;
+      width: 120px;
+      height: 120px;
         border-radius: 24px;
-        overflow: hidden;
+      overflow: hidden;
         position: relative;
         border: 2px solid rgba(255, 255, 255, 0.2);
         transition: transform 0.3s ease;
@@ -480,31 +480,31 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           }
         }
 
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-        .avatar-overlay {
-          position: absolute;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
+      .avatar-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
           transition: opacity 0.3s ease;
-          cursor: pointer;
+        cursor: pointer;
 
           i {
-            font-size: 24px;
+          font-size: 24px;
             margin-bottom: 8px;
-          }
+        }
 
-          span {
-            font-size: 12px;
+        span {
+          font-size: 12px;
           }
         }
       }
@@ -564,7 +564,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         border-radius: 20px;
         background: rgba(99, 102, 241, 0.1);
         color: #818cf8;
-        font-size: 14px;
+    font-size: 14px;
 
         i {
           font-size: 12px;
@@ -654,7 +654,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     justify-content: center;
     gap: 8px;
     position: relative;
-    overflow: hidden;
+  overflow: hidden;
     transition: all 0.3s ease;
 
     i {
@@ -738,7 +738,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         p {
-          margin: 0;
+      margin: 0;
           font-size: 14px;
           color: $text-secondary;
         }
@@ -776,8 +776,8 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   inset: 0;
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease;
@@ -834,9 +834,9 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       h2 {
         margin: 0;
         font-size: 18px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
         i {
           color: #818cf8;
@@ -890,7 +890,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
 
       input {
-        flex: 1;
+      flex: 1;
         background: none;
         border: none;
         color: $text-primary;
@@ -998,7 +998,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         position: absolute;
         inset: 0;
         background: rgba(0, 0, 0, 0.6);
-        display: flex;
+    display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -1030,8 +1030,8 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       margin-bottom: 1.5rem;
 
       .form-label {
-        display: flex;
-        align-items: center;
+    display: flex;
+    align-items: center;
         gap: 8px;
         margin-bottom: 8px;
         color: $text-secondary;
@@ -1044,7 +1044,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
       .input-wrapper {
         background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
+    border-radius: 12px;
         padding: 12px 16px;
         display: flex;
         align-items: center;
@@ -1076,9 +1076,9 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           cursor: pointer;
           padding: 4px;
           font-size: 14px;
-          transition: all 0.3s ease;
+    transition: all 0.3s ease;
 
-          &:hover {
+    &:hover {
             color: $text-primary;
             transform: scale(1.1);
           }
@@ -1148,9 +1148,9 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     .btn-content {
       position: relative;
       z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       gap: 8px;
     }
 
@@ -1183,7 +1183,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       padding: 12px;
       border: none;
       border-radius: 12px;
-      font-size: 14px;
+          font-size: 14px;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
@@ -1300,7 +1300,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
 
   .profile-card .profile-header {
-    flex-direction: column;
+      flex-direction: column;
     align-items: center;
     text-align: center;
 
@@ -1398,7 +1398,7 @@ $glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     transform: translateY(0);
   }
 }
-</style>
+</style> 
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
